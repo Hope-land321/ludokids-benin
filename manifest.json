@@ -1,0 +1,10 @@
+{
+  "name": "LudoKids - Apprendre en Jouant",
+  "short_name": "LudoKids",
+  "description": "L'application ludo-éducative pour apprendre en s'amusant.",
+  "start_url": "./index.html",
+  "display": "standalone",
+  "background_color": "#0f172a",
+  "theme_color": "#6366f1",
+  "icons": [{"src": "./images/banner.png", "sizes": "512x512", "type": "image/png"}]
+}

@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>LudoKids Bénin - Abigaïl, Bignon & Nathan</title>
+  <meta name="description" content="Solution éducative familiale avec Abigaïl (CI), Bignon (3ème) et Nathan (1ère D).">
+  <link rel="manifest" href="manifest.json">
+  <meta name="theme-color" content="#4f46e5">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <canvas id="confetti-canvas"></canvas>
+
+  <header class="app-header">
+    <div class="logo-container">
+      <div class="logo-icon">🇧🇯</div>
+      <div class="logo-text">
+        <h1>LudoKids Bénin</h1>
+        <p class="subtitle">Espace Abigaïl, Bignon & Nathan • Anglais 🇬🇧 • Cognition 🧠</p>
+      </div>
+    </div>
+    <nav class="app-nav">
+      <button class="nav-btn active" data-tab="home-tab"><span class="icon">🏠</span> Accueil</button>
+      <button class="nav-btn" data-tab="kids-tab"><span class="icon">📚</span> Apprentissage</button>
+      <button class="nav-btn" data-tab="english-tab"><span class="icon">🇬🇧</span> Espace Anglais</button>
+      <button class="nav-btn" data-tab="cognitive-tab"><span class="icon">🧠</span> Entraînement Cognitif</button>
+      <button class="nav-btn" data-tab="tutor-tab"><span class="icon">🎓</span> Aide aux Devoirs (IA)</button>
+      <button class="nav-btn" data-tab="mom-tab"><span class="icon">📊</span> Suivi Parental</button>
+    </nav>
+  </header>
+
+  <main class="main-content">
+    <section id="home-tab" class="tab-content active">
+      <div class="birthday-hero">
+        <div class="hero-image-wrapper">
+          <img src="images/banner.png" alt="Bannière LudoKids Bénin" class="hero-img">
+          <div class="hero-overlay"></div>
+        </div>
+        <div class="hero-card glass-card">
+          <h2>Plateforme Éducative d'Abigaïl, Bignon & Nathan</h2>
+          <p class="hero-description">Spécialement configuré pour <strong>Abigaïl</strong> (CI), <strong>Bignon</strong> (3ème - BEPC) et <strong>Nathan</strong> (1ère D). Module d'<strong>Anglais interactif</strong> (supervisé par Maman 🇬🇧), <strong>Entraînement Cognitif 🧠</strong> et assistant <strong>OpenRouter AI</strong> !</p>
+          <div class="hero-actions">
+            <button class="btn btn-primary btn-lg" onclick="switchTab('kids-tab')">🚀 Choisir le Profil d'un Enfant</button>
+            <button class="btn btn-secondary btn-lg" onclick="switchTab('english-tab')">🇬🇧 Espace Anglais de Maman</button>
+          </div>
+          <div class="features-grid">
+            <div class="feature-item"><div class="feature-icon">👧👦🧑</div><h3>Profils Personnalisés</h3><p>Abigaïl (CI), Bignon (3ème) et Nathan (1ère D).</p></div>
+            <div class="feature-item"><div class="feature-icon">🇬🇧</div><h3>English Corner</h3><p>Vocabulaire, grammaire du BEPC/BAC et chat en anglais.</p></div>
+            <div class="feature-item"><div class="feature-icon">🧠</div><h3>Brain Gym Cognitif</h3><p>Jeux de mémoire visuelle, de logique et de rapidité.</p></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="kids-tab" class="tab-content">
+      <div class="section-header"><h2>👦 Profil de l'Élève & Programme Scolaire</h2><p>Sélectionne l'enfant pour charger son programme spécifique :</p></div>
+      <div class="player-selector glass-card">
+        <div class="profile-chips">
+          <button class="chip-btn chip-abigail active" onclick="selectChildProfile('Abigaïl', 'CI')">👧 Abigaïl (Classe CI - Primaire)</button>
+          <button class="chip-btn chip-bignon" onclick="selectChildProfile('Bignon', '3ème')">👦 Bignon (Classe 3ème - BEPC)</button>
+          <button class="chip-btn chip-nathan" onclick="selectChildProfile('Nathan', '1ère D')">🧑 Nathan (Classe 1ère D - Scientifique)</button>
+        </div>
+        <div class="active-profile-info"><span class="active-class-tag" id="active-class-display">Profil : Abigaïl • CI (Primaire)</span></div>
+        <div class="player-score-badge">⭐ <span id="current-player-stars">0</span> Étoiles</div>
+      </div>
+      <div class="study-session-box glass-card">
+        <div class="session-info"><h3>⏱ Session d'Étude Guidée</h3><p id="study-status-text">Complète une révision ou étudie 30 min pour débloquer la pause Foot ⚽ ou Basket 🏀 !</p></div>
+        <div class="session-timer-controls">
+          <div class="timer-display" id="study-timer">30:00</div>
+          <button class="btn btn-success" id="start-study-btn" onclick="toggleStudySession()">▶ Démarrer l'Étude</button>
+        </div>
+      </div>
+      <div class="games-grid" id="subjects-grid"></div>
+      <div id="game-arena" class="game-arena glass-card hidden">
+        <button class="close-game-btn" onclick="closeGameArena()">✖ Fermer</button>
+        <div id="game-content"></div>
+      </div>
+    </section>
+
+    <section id="english-tab" class="tab-content">
+      <div class="section-header"><h2>🇬🇧 Espace English Master (Dédié à Maman, Prof d'Anglais)</h2><p>Pratique de l'anglais oral, grammaire et dialogues interactifs pour Abigaïl, Bignon & Nathan.</p></div>
+      <div class="english-box glass-card">
+        <div class="teacher-dedication"><span>👩‍🏫 Espace pédagogique d'Anglais supervisé avec amour par Maman</span></div>
+        <div class="profile-chips" style="margin-bottom: 1rem;">
+          <button class="chip-btn chip-abigail active" onclick="selectChildProfile('Abigaïl', 'CI')">👧 Abigaïl (CI)</button>
+          <button class="chip-btn chip-bignon" onclick="selectChildProfile('Bignon', '3ème')">👦 Bignon (3ème)</button>
+          <button class="chip-btn chip-nathan" onclick="selectChildProfile('Nathan', '1ère D')">🧑 Nathan (1ère D)</button>
+        </div>
+        <div class="english-grid">
+          <div class="game-card glass-card" style="background: rgba(15, 23, 42, 0.6);">
+            <div class="game-icon-badge math-bg">🔤</div><h3>Vocabulaire & Phrasal Verbs</h3>
+            <p>Mots indispensables pour le CI, BEPC et BAC.</p>
+            <button class="btn btn-primary btn-block" onclick="startEnglishVocabGame()">Pratiquer le Vocabulaire</button>
+          </div>
+          <div class="game-card glass-card" style="background: rgba(15, 23, 42, 0.6);">
+            <div class="game-icon-badge quiz-bg">🗣️</div><h3>Chat de Conversation en Anglais</h3>
+            <p>Discute en direct en anglais avec l'IA qui te corrige gentiment !</p>
+            <button class="btn btn-secondary btn-block" onclick="startEnglishConversation()">Parler en Anglais avec l'IA</button>
+          </div>
+        </div>
+        <div id="english-arena" class="english-arena-box hidden" style="margin-top: 1.5rem;"><div id="english-content"></div></div>
+      </div>
+    </section>
+
+    <section id="cognitive-tab" class="tab-content">
+      <div class="section-header"><h2>🧠 Gymnastique Cognitives & Développement Mental</h2><p>Exercices ludiques pour développer la mémoire visuelle, la concentration et la rapidité.</p></div>
+      <div class="games-grid">
+        <div class="game-card glass-card"><div class="game-icon-badge memory-bg">🧩</div><h3>Mémoire Visuelle & Concentration</h3><p>Mémorise les emplacements des cartes pour développer la mémoire à court terme.</p><button class="btn btn-primary btn-block" onclick="startCognitiveMemory()">Lancer le Test Mémoire</button></div>
+        <div class="game-card glass-card"><div class="game-icon-badge math-bg">⚡</div><h3>Calcul Mental & Agilité Mentale</h3><p>Enchaîne les calculs réflexes pour stimuler le cortex préfrontal.</p><button class="btn btn-primary btn-block" onclick="startCognitiveCalculus()">Lancer l'Agilité Mentale</button></div>
+        <div class="game-card glass-card"><div class="game-icon-badge quiz-bg">🎯</div><h3>Focus & Séquence Simon</h3><p>Reproduis des séquences lumineuses pour renforcer l'attention sélective.</p><button class="btn btn-primary btn-block" onclick="startCognitiveSimon()">Lancer le Test de Focus</button></div>
+      </div>
+      <div id="cognitive-arena" class="game-arena glass-card hidden"><button class="close-game-btn" onclick="closeCognitiveArena()">✖ Fermer</button><div id="cognitive-content"></div></div>
+    </section>
+
+    <section id="tutor-tab" class="tab-content">
+      <div class="section-header"><h2>🎓 Assistant Pédagogique (OpenRouter AI Intégré)</h2><p>Sélectionne qui pose la question pour adapter la réponse :</p></div>
+      <div class="ai-tutor-container glass-card">
+        <div class="profile-chips" style="margin-bottom: 1rem;">
+          <button class="chip-btn chip-abigail active" onclick="selectChildProfile('Abigaïl', 'CI')">👧 Abigaïl (CI)</button>
+          <button class="chip-btn chip-bignon" onclick="selectChildProfile('Bignon', '3ème')">👦 Bignon (3ème)</button>
+          <button class="chip-btn chip-nathan" onclick="selectChildProfile('Nathan', '1ère D')">🧑 Nathan (1ère D)</button>
+        </div>
+        <div class="chat-header">
+          <div class="tutor-avatar">🎓</div>
+          <div class="tutor-info"><h3>Coach Scolaire OpenRouter AI</h3><span class="tutor-status">● OpenRouter API Connectée • Profil actif : <strong id="tutor-current-class">Abigaïl (CI)</strong></span></div>
+        </div>
+        <div class="chat-messages" id="chat-messages">
+          <div class="message ai-msg"><div class="msg-bubble" id="tutor-welcome-msg">Bonjour ! Je suis le coach scolaire de votre famille. Sélectionnez un enfant ci-dessus, puis posez votre question de cours.</div></div>
+        </div>
+        <div class="chat-input-area">
+          <input type="text" id="ai-question-input" placeholder="Poser une question de cours..." class="input-field" onkeypress="handleChatKeyPress(event)">
+          <button class="btn btn-primary" onclick="sendAIQuestion()">Envoyer à l'IA 🚀</button>
+        </div>
+        <div class="suggested-questions" id="suggested-questions-box"></div>
+      </div>
+    </section>
+
+    <section id="mom-tab" class="tab-content">
+      <div class="section-header"><h2>📊 Tableau de Suivi Parental de Maman</h2><p>Suivi en temps réel de la progression d'Abigaïl, Bignon et Nathan.</p></div>
+      <div class="dashboard-grid">
+        <div class="stat-card glass-card"><div class="stat-icon">📈</div><div class="stat-info"><span class="stat-title">Temps Total d'Étude</span><span class="stat-value" id="total-study-time">0h 0min</span></div></div>
+        <div class="stat-card glass-card"><div class="stat-icon">✅</div><div class="stat-info"><span class="stat-title">Exercices Accomplis</span><span class="stat-value" id="total-quizzes-done">0</span></div></div>
+        <div class="stat-card glass-card"><div class="stat-icon">⭐</div><div class="stat-info"><span class="stat-title">Étoiles Cumulées</span><span class="stat-value" id="total-stars">0</span></div></div>
+      </div>
+      <div class="children-table-container glass-card">
+        <h3>👦 Progression des Enfants</h3>
+        <table class="data-table"><thead><tr><th>Enfant</th><th>Classe</th><th>Étoiles ⭐</th><th>Sessions d'Étude</th><th>Statut</th></tr></thead>
+        <tbody id="children-table-body">
+          <tr><td><strong>👧 Abigaïl</strong></td><td>CI (Primaire)</td><td><span id="stars-abigail">0</span> ⭐</td><td><span id="sessions-abigail">0</span> session(s)</td><td><span class="status-online">Prête à travailler</span></td></tr>
+          <tr><td><strong>👦 Bignon</strong></td><td>3ème (BEPC)</td><td><span id="stars-bignon">0</span> ⭐</td><td><span id="sessions-bignon">0</span> session(s)</td><td><span class="status-online">Prêt à travailler</span></td></tr>
+          <tr><td><strong>🧑 Nathan</strong></td><td>1ère D (Lycée)</td><td><span id="stars-nathan">0</span> ⭐</td><td><span id="sessions-nathan">0</span> session(s)</td><td><span class="status-online">Prêt à travailler</span></td></tr>
+        </tbody></table>
+      </div>
+      <div class="rewards-section glass-card">
+        <h3>🎁 Le Pacte de Récompenses de Maman</h3>
+        <div class="rewards-list" id="rewards-list">
+          <div class="reward-card"><div class="reward-details"><h4>🍦 Sortie Glace / Parc</h4><p>Nécessite 100 Étoiles ⭐</p></div><button class="btn btn-success btn-sm" onclick="claimReward('Sortie Glace / Parc')">Valider la Récompense</button></div>
+          <div class="reward-card"><div class="reward-details"><h4>⚽ 45 min de Match de Foot réel / Temps Libre</h4><p>Nécessite 80 Étoiles ⭐</p></div><button class="btn btn-success btn-sm" onclick="claimReward('Match de Foot réel / Temps Libre')">Valider la Récompense</button></div>
+        </div>
+        <div class="add-reward-form" style="margin-top: 1.5rem; display: flex; gap: 1rem;">
+          <input type="text" id="new-reward-title" placeholder="Ajouter une récompense..." class="input-field">
+          <input type="number" id="new-reward-cost" placeholder="Étoiles (ex: 150)" class="input-field" style="max-width: 140px;">
+          <button class="btn btn-primary" onclick="addReward()">+ Ajouter</button>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="app-footer"><p>LudoKids Bénin • Solution Éducative Familiale pour Abigaïl, Bignon & Nathan © 2026</p></footer>
+
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
