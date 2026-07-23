@@ -135,7 +135,10 @@ function switchTab(tabId) {
     activeBtn.classList.add('active');
     activeBtn.scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' });
   }
-  if (activeContent) activeContent.classList.add('active');
+  if (activeContent) {
+    activeContent.classList.add('active');
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
 
   if (tabId === 'home-tab') triggerConfetti();
 }
@@ -584,9 +587,94 @@ function checkCogAns(target) {
   }
 }
 
+let simonSequence = [];
+let simonUserSequence = [];
+
 function startCognitiveSimon() {
   playSound('click');
-  alert(`🎯 Exercice d'attention sélective Simon : Mémorise la séquence de couleurs pour développer la concentration !`);
+  const arena = document.getElementById('cognitive-arena');
+  arena.classList.remove('hidden');
+  arena.scrollIntoView({ behavior: 'smooth', block: 'center' });
+
+  simonSequence = [];
+  simonUserSequence = [];
+
+  document.getElementById('cognitive-content').innerHTML = `
+    <div class="math-quiz-box">
+      <h3>🎯 Test de Focus & Mémoire Simon (${currentData.activeChild})</h3>
+      <p style="margin-bottom: 1rem; color: var(--text-muted);" id="simon-status-text">Clique sur "Lancer" pour voir la séquence de couleurs !</p>
+      <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; max-width: 300px; margin: 0 auto;">
+        <button id="simon-0" class="option-btn" style="background: #ef4444; height: 85px; border-radius: 16px; font-size: 2rem; border: none;" onclick="handleSimonClick(0)">🔴</button>
+        <button id="simon-1" class="option-btn" style="background: #3b82f6; height: 85px; border-radius: 16px; font-size: 2rem; border: none;" onclick="handleSimonClick(1)">🔵</button>
+        <button id="simon-2" class="option-btn" style="background: #10b981; height: 85px; border-radius: 16px; font-size: 2rem; border: none;" onclick="handleSimonClick(2)">🟢</button>
+        <button id="simon-3" class="option-btn" style="background: #f59e0b; height: 85px; border-radius: 16px; font-size: 2rem; border: none;" onclick="handleSimonClick(3)">🟡</button>
+      </div>
+      <button class="btn btn-primary" style="margin-top: 1.2rem;" onclick="nextSimonRound()">▶ Lancer la Séquence</button>
+    </div>
+  `;
+}
+
+function nextSimonRound() {
+  playSound('click');
+  simonUserSequence = [];
+  const nextColor = Math.floor(Math.random() * 4);
+  simonSequence.push(nextColor);
+  document.getElementById('simon-status-text').textContent = `Séquence Niveau ${simonSequence.length} en cours...`;
+  playSimonSequence();
+}
+
+function playSimonSequence() {
+  let i = 0;
+  const interval = setInterval(() => {
+    if (i >= simonSequence.length) {
+      clearInterval(interval);
+      document.getElementById('simon-status-text').textContent = `À toi de jouer ${currentData.activeChild} ! Reproduis la séquence.`;
+      return;
+    }
+    flashSimonButton(simonSequence[i]);
+    i++;
+  }, 700);
+}
+
+function flashSimonButton(id) {
+  playSound('win');
+  const btn = document.getElementById(`simon-${id}`);
+  if (btn) {
+    btn.style.opacity = '0.3';
+    btn.style.transform = 'scale(0.92)';
+    setTimeout(() => {
+      btn.style.opacity = '1';
+      btn.style.transform = 'none';
+    }, 350);
+  }
+}
+
+function handleSimonClick(id) {
+  if (simonSequence.length === 0) return;
+  flashSimonButton(id);
+  simonUserSequence.push(id);
+  const currentIdx = simonUserSequence.length - 1;
+
+  if (simonUserSequence[currentIdx] !== simonSequence[currentIdx]) {
+    playSound('click');
+    alert(`❌ Mauvaise séquence ! Tu as atteint le Niveau ${simonSequence.length} !`);
+    simonSequence = [];
+    simonUserSequence = [];
+    document.getElementById('simon-status-text').textContent = `Réinitialisé. Clique sur Lancer pour recommencer !`;
+    return;
+  }
+
+  if (simonUserSequence.length === simonSequence.length) {
+    playSound('correct');
+    if (simonSequence.length >= 3) {
+      triggerConfetti();
+      currentData.stars[currentData.activeChild] += 25;
+      updateUI();
+      alert(`🌟 Bravo ${currentData.activeChild} ! Séquence de ${simonSequence.length} réussie ! +25 Étoiles ⭐`);
+    } else {
+      setTimeout(() => { nextSimonRound(); }, 800);
+    }
+  }
 }
 
 function closeCognitiveArena() {
@@ -690,6 +778,7 @@ function startFootballGame() {
   playSound('click');
   const arena = document.getElementById('game-arena');
   arena.classList.remove('hidden');
+  arena.scrollIntoView({ behavior: 'smooth', block: 'center' });
 
   document.getElementById('game-content').innerHTML = `
     <div class="sports-arena-box">
@@ -737,6 +826,7 @@ function startBasketballGame() {
   playSound('click');
   const arena = document.getElementById('game-arena');
   arena.classList.remove('hidden');
+  arena.scrollIntoView({ behavior: 'smooth', block: 'center' });
 
   document.getElementById('game-content').innerHTML = `
     <div class="sports-arena-box">
