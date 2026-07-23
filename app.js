@@ -300,6 +300,7 @@ function startSubjectGame(subId) {
   playSound('click');
   const arena = document.getElementById('game-arena');
   arena.classList.remove('hidden');
+  arena.scrollIntoView({ behavior: 'smooth', block: 'center' });
 
   let questionText = "";
   let options = [];
@@ -351,10 +352,16 @@ function checkSubjectAnswer(isCorrect) {
 }
 
 // Module Anglais
+function closeEnglishArena() {
+  playSound('click');
+  document.getElementById('english-arena').classList.add('hidden');
+}
+
 function startEnglishVocabGame() {
   playSound('click');
   const arena = document.getElementById('english-arena');
   arena.classList.remove('hidden');
+  arena.scrollIntoView({ behavior: 'smooth', block: 'center' });
 
   let questionText = "";
   let options = [];
@@ -406,6 +413,7 @@ function startEnglishConversation() {
   playSound('click');
   const arena = document.getElementById('english-arena');
   arena.classList.remove('hidden');
+  arena.scrollIntoView({ behavior: 'smooth', block: 'center' });
 
   const childName = currentData.activeChild;
   const childGrade = currentData.activeClass;
@@ -486,6 +494,7 @@ function startCognitiveMemory() {
   playSound('click');
   const arena = document.getElementById('cognitive-arena');
   arena.classList.remove('hidden');
+  arena.scrollIntoView({ behavior: 'smooth', block: 'center' });
 
   const symbols = ['🧠', '🧠', '⚡', '⚡', '🎯', '🎯', '🚀', '🚀'];
   let shuffled = [...symbols].sort(() => Math.random() - 0.5);
@@ -541,6 +550,7 @@ function startCognitiveCalculus() {
   playSound('click');
   const arena = document.getElementById('cognitive-arena');
   arena.classList.remove('hidden');
+  arena.scrollIntoView({ behavior: 'smooth', block: 'center' });
 
   let n1 = Math.floor(Math.random() * 15) + 5;
   let n2 = Math.floor(Math.random() * 15) + 5;
